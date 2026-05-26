@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Everdell",
+    "thumbnail": "/assets/everdell.png",
+    "minPlayers": 1,
+    "maxPlayers": 4,
+    "playingTime": 80,
+    "complexity": 2.8,
+    "type": "Strategy",
+    "description": "A charming worker-placement game about building a woodland civilization of critters and constructions."
+  },
+  {
+    "id": 2,
+    "title": "Root",
+    "thumbnail": "/assets/root.png",
+    "minPlayers": 2,
+    "maxPlayers": 4,
+    "playingTime": 90,
+    "complexity": 3.7,
+    "type": "Strategy",
+    "description": "A game of woodland might and right. Drive out the cats, ally with the vagabond, or rule the roost."
+  },
+  {
+    "id": 3,
+    "title": "Flamecraft",
+    "thumbnail": "/assets/flamecraft.png",
+    "minPlayers": 1,
+    "maxPlayers": 5,
+    "playingTime": 60,
+    "complexity": 2.1,
+    "type": "Family",
+    "description": "As a Flamekeeper, converse with artisan dragons, place them in shops, and cast enchantments to gain reputation."
+  },
+  {
+    "id": 4,
+    "title": "The Crew: Mission Deep Sea",
+    "thumbnail": "/assets/the-crew.png",
+    "minPlayers": 2,
+    "maxPlayers": 5,
+    "playingTime": 20,
+    "complexity": 2.0,
+    "type": "Cooperative",
+    "description": "Work together with your crew to complete unique, hidden trick-taking missions in the deep ocean."
+  },
+  {
+    "id": 5,
+    "title": "Down Force",
+    "thumbnail": "/assets/downforce.png",
+    "minPlayers": 2,
+    "maxPlayers": 6,
+    "playingTime": 60,
+    "complexity": 2.1,
+    "type": "Family",
+    "description": "Race your F1 cars to victory through clever card-play."
+  },
+  {
+    "id": 6,
+    "title": "Tiny Towns",
+    "thumbnail": "/assets/tiny-towns.png",
+    "minPlayers": 1,
+    "maxPlayers": 6,
+    "playingTime": 60,
+    "complexity": 2.3,
+    "type": "Family",
+    "description": "Build a beautiful town for your critters using resources chosen by a builder each round. Gather points for strategic constuction. "
+  }
+]
