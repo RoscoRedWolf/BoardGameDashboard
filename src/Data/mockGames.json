@@ -64,5 +64,16 @@
     "complexity": 2.3,
     "type": "Family",
     "description": "Build a beautiful town for your critters using resources chosen by a builder each round. Gather points for strategic constuction. "
+  },
+  {
+    "id": 7,
+    "title": "The Fox in the Forest",
+    "thumbnail": "/assets/the-fox-in-the-forest.png",
+    "minPlayers": 2,
+    "maxPlayers": 2,
+    "playingTime": 30,
+    "complexity": 1.6,
+    "type": "Strategy",
+    "description": "In this trick-taking game for 2, you must win more than your rival—but not too much! "
   }
 ]
