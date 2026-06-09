@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import gameData from './Data/mockGames.json';
-import PurchaseWishList from './PurchaseWishList';
+import WishList from './WishList';
+import MyCollection from './MyCollection';
 import PaginationControls from './PaginationControls';
+import FilterControls from './Data/FilterControls';
 
 function App() {
   const [games, setGames] = useState(gameData);
@@ -9,6 +11,7 @@ function App() {
   const [playerCount, setPlayerCount] = useState('');
   const [maxWeight, setMaxWeight] = useState('');
   const [type, setType] = useState('');
+  const [maxPrice, setMaxPrice] = useState(200);
   const [location, setLocation] = useState(() => {
     const savedLocation = localStorage.getItem('dashboardLocation');
     return savedLocation ? savedLocation : 'home';
@@ -17,10 +20,15 @@ function App() {
     const savedWishList = localStorage.getItem('boardGameWishList');
     return savedWishList ? JSON.parse(savedWishList) : [];
   });
+  const [collection, setCollection] = useState([]);
+
+
   const [homePage, setHomePage] = useState(1);
   const [notification, setNotification] = useState('');
 
-  const filteredGames = games.filter((game) => {
+  const activeList = location === 'wishList' ? wishList : games;
+
+  const filteredGames = activeList.filter((game) => {
     const cleanSearch = searchQuery.trim().toLowerCase();
     
     const matchesKeyword = 
@@ -33,7 +41,9 @@ function App() {
       const matchesWeight = maxWeight === '' || game.complexity >= Number(maxWeight);
       const matchesType = type === '' || game.type === type;
 
-      return matchesKeyword && matchesPlayers && matchesWeight && matchesType;
+      const matchesPrice = Number(game.msrp) <= maxPrice;
+
+      return matchesKeyword && matchesPlayers && matchesWeight && matchesType && matchesPrice;
   })
 
   const itemsPerPage = 5;
@@ -61,6 +71,20 @@ function App() {
     }, 3000);
   }
 
+    const handleAddToCollection = (gameToAdd) => {
+      const alreadyOwned = collection.some((game) => game.id === gameToAdd.id);
+
+      if (!alreadyOwned) {
+        setCollection([...collection, gameToAdd]);
+      } else {
+        alert("You already have this game in your collection");
+      }
+      setNotification(`Added "${game.title}" to your collection!`);
+      setTimeout(() => {
+        setNotification('');
+      }, 3000);
+    };
+
   useEffect(() => {
         if (homePage > totalHomePages) {
             if (totalHomePages > 0) {
@@ -84,10 +108,11 @@ function App() {
       setPlayerCount('');
       setMaxWeight('');
       setType('');
+      setMaxPrice(200);
   }
 
   
-    //Render
+    // --Render-- 
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 p-6 md:p-10">
@@ -95,17 +120,17 @@ function App() {
         <div className="flex gap-7 border border-slate-300 p-3 justify-center mb-3">
           <button 
             onClick={(e) => setLocation('home')} 
-            className="hover:text-amber-400">
+            className={`hover:text-amber-400 ${location === 'home' && 'p-2 border-b-2 border-amber-400'}`}>
               Home
           </button>
           <button 
             onClick={(e) => setLocation('wishList')} 
-            className="hover:text-amber-400">
+            className={`hover:text-amber-400 ${location === 'wishList' && 'p-2 border-b-2 border-amber-400'}`}>
               Wish List
           </button>
           <button 
             onClick={(e) => setLocation('myCollection')} 
-            className="hover:text-amber-400">
+            className={`hover:text-amber-400 ${location === 'myCollection' && 'p-2 border-b-2 border-amber-400'}`}>
               My Collection
           </button>
         </div>
@@ -114,61 +139,22 @@ function App() {
         </h1>
       </header>
 
-      {location === 'home' ? (
+      <FilterControls 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery} 
+        playerCount={playerCount} 
+        setPlayerCount={setPlayerCount} 
+        maxWeight={maxWeight}
+        setMaxWeight={setMaxWeight}
+        type={type} 
+        setType={setType} 
+        maxPrice={maxPrice}
+        setMaxPrice={setMaxPrice}
+        handleResetFilters={handleResetFilters} 
+      />
+
+      {location === 'home' && (
         <>
-          <nav className="flex flex-col gap-5 mb-6 p-4 bg-slate-800 rounded-xl">
-            <input
-              type="text"
-              placeholder="Search games..." 
-              value={searchQuery} 
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-slate-900 text-slate-100 p-2 rounded border border-slate-700 focus:outline-none focus:border-amber-400" 
-            />
-            
-            <select
-              value={playerCount}
-              onChange={(e) => setPlayerCount(e.target.value)}
-              className="bg-slate-900 text-slate-100 p-2 rounded border border-slate-700"
-            >
-              <option value="">Any Players</option>
-              <option value="2">2 Players</option>
-              <option value="3">3 Players</option>
-              <option value="4">4 Players</option>
-              <option value="5">5 Players</option>
-              <option value="6">6 Players</option>
-            </select>
-
-            <select
-              value={maxWeight}
-              onChange={(e) => setMaxWeight(e.target.value)}
-              className="bg-slate-900 text-slate-100 p-2 rounded border border-slate-700"
-            >
-              <option value="">Any weight/complexity</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="bg-slate-900 text-slate-100 p-2 rounded border border-slate-700"
-            >
-              <option value="">Any Type</option>
-              <option value="Strategy">Strategy</option>
-              <option value="Family">Family</option>
-              <option value="Cooperative">Cooperative</option>
-            </select>
-
-            <button 
-              onClick={handleResetFilters} 
-              className="mt-2 bg-slate-700 hover:bg-amber-500 text-slate-100 hover:text-slate-900 font-semibold p-2 rounded border border-slate-600 hover:border-amber-400 transition-colors duration-200"
-              > 
-                Reset All
-            </button>
-          </nav>
-
           <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {currentHomeItems.map((game) => (
               <div 
@@ -205,6 +191,12 @@ function App() {
                     >
                         + Add to Wish List
                     </button>
+                    <button
+                      onClick={() => handleAddToCollection(game)}
+                      className="bg-slate-700 hover:bg-amber-500 text-slate-100 hover:text-slate-900 text-xs font-semibold px-3 py-1.5 rounded border border-slate-600 transition-colors duration-150 shadow-xs"
+                    >
+                        + Add to My Collection
+                    </button>
                   </div>
                 </div>
               </div>
@@ -217,12 +209,24 @@ function App() {
             setCurrentPage={setHomePage} 
             totalPages={totalHomePages} 
           />
-        </> ):
-        <PurchaseWishList 
-          wishList={wishList} 
+        </>
+      )}
+
+      {location === 'wishList' && (
+        <WishList 
+          wishList={filteredGames} 
           setWishList={setWishList}
-          onRemoveGame={handleRemoveFromWishList} />
-      }
+          onRemoveGame={handleRemoveFromWishList} 
+        />
+      )}  
+        
+      {location === 'myCollection' && (
+          <MyCollection 
+            collection={collection}
+          />
+      )}
+
+
       {notification && (
         <div className="fixed bottom-5 right-5 bg-amber-500 text-slate-900 font-bold px-4 py-3 rounded-lg shadow-2xl border border-amber-400 animate-bounce transition-all duration-300">
           🚀 {notification}
