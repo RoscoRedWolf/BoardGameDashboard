@@ -1,6 +1,6 @@
 
 
-function MyCollection({ collection }) {
+function MyCollection({ collection, onRemoveGame }) {
 
   return (
     <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -32,18 +32,10 @@ function MyCollection({ collection }) {
             </div>
             
             <div className="flex justify-between mt-5">
-              <span className="font-bold text-slate-100">${game.msrp}</span>
               <button
-                onClick={() => handleAddToWishList(game)}
-                className="bg-slate-700 hover:bg-amber-500 text-slate-100 hover:text-slate-900 text-xs font-semibold px-3 py-1.5 rounded border border-slate-600 transition-colors duration-150 shadow-xs"
-              >
-                  + Add to Wish List
-              </button>
-              <button
-                onClick={() => handleAddToCollection(game)}
-                className="bg-slate-700 hover:bg-amber-500 text-slate-100 hover:text-slate-900 text-xs font-semibold px-3 py-1.5 rounded border border-slate-600 transition-colors duration-150 shadow-xs"
-              >
-                  + Add to My Collection
+                onClick={() => onRemoveGame(game)}
+                className="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-medium rounded transition-colors">
+                  Remove
               </button>
             </div>
           </div>
@@ -51,6 +43,8 @@ function MyCollection({ collection }) {
       ))}
       
     </main>
+
+    
   )
 };
 

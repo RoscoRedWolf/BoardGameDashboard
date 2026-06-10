@@ -20,7 +20,10 @@ function App() {
     const savedWishList = localStorage.getItem('boardGameWishList');
     return savedWishList ? JSON.parse(savedWishList) : [];
   });
-  const [collection, setCollection] = useState([]);
+  const [collection, setCollection] = useState(() => {
+    const savedCollection = localStorage.getItem('boardGameCollection');
+    return savedCollection ? JSON.parse(savedCollection): [];
+  });
 
 
   const [homePage, setHomePage] = useState(1);
@@ -70,6 +73,14 @@ function App() {
       setNotification('');
     }, 3000);
   }
+  const handleRemoveFromCollection = (gameToRemove) => {
+    const updatedCollection = collection.filter((item) => item.id !== gameToRemove.id);
+    setCollection(updatedCollection);
+    setNotification(`Removed "${game.title}" from your collection!`);
+    setTimeout(() => {
+      setNotification('');
+    }, 3000);
+  }
 
     const handleAddToCollection = (gameToAdd) => {
       const alreadyOwned = collection.some((game) => game.id === gameToAdd.id);
@@ -79,7 +90,7 @@ function App() {
       } else {
         alert("You already have this game in your collection");
       }
-      setNotification(`Added "${game.title}" to your collection!`);
+      setNotification(`Added "${gameToAdd.title}" to your collection!`);
       setTimeout(() => {
         setNotification('');
       }, 3000);
@@ -102,6 +113,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('dashboardLocation', location);
   }, [location]);
+
+  useEffect(() => {
+    localStorage.setItem('boardGameCollection', JSON.stringify(collection));
+  }, [collection]);
 
   const handleResetFilters = () => {
       setSearchQuery('');
@@ -181,10 +196,11 @@ function App() {
                     <div>⏱️ {game.playingTime} Mins</div>
                     <div>🧠 Complexity: {game.complexity} / 5</div>
                     <div>🎲 Type: {game.type}</div>
+                    <div>💲 Price: ${game.msrp}</div>
                   </div>
                   
                   <div className="flex justify-between mt-5">
-                    <span className="font-bold text-slate-100">${game.msrp}</span>
+                    
                     <button
                       onClick={() => handleAddToWishList(game)}
                       className="bg-slate-700 hover:bg-amber-500 text-slate-100 hover:text-slate-900 text-xs font-semibold px-3 py-1.5 rounded border border-slate-600 transition-colors duration-150 shadow-xs"
@@ -223,6 +239,7 @@ function App() {
       {location === 'myCollection' && (
           <MyCollection 
             collection={collection}
+            onRemoveGame={handleRemoveFromCollection}
           />
       )}
 
