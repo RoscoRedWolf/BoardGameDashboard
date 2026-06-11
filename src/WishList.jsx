@@ -14,6 +14,13 @@ function WishList({ wishList, setWishList, onRemoveGame }) {
     const currentDisplayItems = wishList.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(wishList.length / itemsPerPage);
 
+		const handleClear = () => {
+			const userConfirmed = window.confirm("Are you sure you want to clear your entire wishlist? : This action cannot be undone!");
+			if (userConfirmed) {
+				setWishList([])
+			}
+		}
+
     useEffect(() => {
         if (currentPage > totalPages) {
             if (totalPages > 0) {
@@ -57,7 +64,16 @@ function WishList({ wishList, setWishList, onRemoveGame }) {
 							setCurrentPage={setCurrentPage} 
 							totalPages={totalPages} 
 					/>
-			</div>        
+
+					<div className="flex items-center justify-center mt-5">
+						<button
+							onClick={handleClear}
+							className="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-medium rounded transition-colors"
+						>
+							Clear Collection
+						</button>
+					</div>
+      </div>
     )
 }
 

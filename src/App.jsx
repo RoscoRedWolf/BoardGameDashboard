@@ -24,6 +24,8 @@ function App() {
     const savedCollection = localStorage.getItem('boardGameCollection');
     return savedCollection ? JSON.parse(savedCollection): [];
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [listToClear, setListToClear] = useState(null);
 
 
   const [homePage, setHomePage] = useState(1);
@@ -76,7 +78,7 @@ function App() {
   const handleRemoveFromCollection = (gameToRemove) => {
     const updatedCollection = collection.filter((item) => item.id !== gameToRemove.id);
     setCollection(updatedCollection);
-    setNotification(`Removed "${game.title}" from your collection!`);
+    setNotification(`Removed "${gameToRemove.title}" from your collection!`);
     setTimeout(() => {
       setNotification('');
     }, 3000);
@@ -126,12 +128,13 @@ function App() {
       setMaxPrice(200);
   }
 
+
   
     // --Render-- 
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-6 md:p-10">
-      <header className="mb-10 text-center md:text-left">
+    <div className="min-h-screen bg-slate-900 text-slate-100 p-6 md:p-10 pt-44 md:pt-46">
+      <header className="fixed top-0 left-0 w-full bg-slate-900 border-b border-slate-800 p-4 z-40 text-center md:text-left">        <h1 className="text-2xl  font-bold mb-5">Board Game Finder</h1>
         <div className="flex gap-7 border border-slate-300 p-3 justify-center mb-3">
           <button 
             onClick={(e) => setLocation('home')} 
@@ -149,9 +152,6 @@ function App() {
               My Collection
           </button>
         </div>
-        <h1 className="text-4xl font-extrabold tracking-tight bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-          GameShelf API Dashboard
-        </h1>
       </header>
 
       <FilterControls 
@@ -233,21 +233,27 @@ function App() {
           wishList={filteredGames} 
           setWishList={setWishList}
           onRemoveGame={handleRemoveFromWishList} 
+          setIsModalOpen={setIsModalOpen}
+          setListToClear={setListToClear}
         />
       )}  
         
       {location === 'myCollection' && (
           <MyCollection 
             collection={collection}
+            setCollection={setCollection}
             onRemoveGame={handleRemoveFromCollection}
+            setIsModalOpen={setIsModalOpen}
+            setListToClear={setListToClear}
           />
       )}
 
 
       {notification && (
-        <div className="fixed bottom-5 right-5 bg-amber-500 text-slate-900 font-bold px-4 py-3 rounded-lg shadow-2xl border border-amber-400 animate-bounce transition-all duration-300">
+        <div className="fixed bottom-5 right-5 bg-slate-800 border border-amber-400 text-amber-400 px-4 py-3 rounded-lg shadow-2xl font-semibold z-50 animate-bounce">
           🚀 {notification}
         </div>
+      
       )}
     </div>
   );
