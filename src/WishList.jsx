@@ -12,7 +12,7 @@ function WishList({ wishList, setWishList, onRemoveGame }) {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
     const currentDisplayItems = wishList.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(wishList.length / itemsPerPage);
+    const totalPages = Math.max(1, Math.ceil(wishList.length / itemsPerPage));
 
 		const handleClear = () => {
 			const userConfirmed = window.confirm("Are you sure you want to clear your entire wishlist? : This action cannot be undone!");
