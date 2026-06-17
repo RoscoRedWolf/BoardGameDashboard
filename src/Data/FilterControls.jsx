@@ -68,7 +68,7 @@ function FilterControls({
                 <input 
                   type="range" 
                   min="0" 
-                  max="200" 
+                  max="100" 
                   value={maxPrice} 
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
                   className="w-full accent-amber-500 bg-slate-700 h-1 rounded-lg appearance-none cursor-pointer"

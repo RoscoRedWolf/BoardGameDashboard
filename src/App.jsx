@@ -11,7 +11,7 @@ function App() {
   const [playerCount, setPlayerCount] = useState('');
   const [maxWeight, setMaxWeight] = useState('');
   const [type, setType] = useState('');
-  const [maxPrice, setMaxPrice] = useState(200);
+  const [maxPrice, setMaxPrice] = useState(100);
   
   const [location, setLocation] = useState(() => {
     return localStorage.getItem('dashboardLocation') || 'home';
@@ -114,7 +114,7 @@ function App() {
     setPlayerCount('');
     setMaxWeight('');
     setType('');
-    setMaxPrice(200);
+    setMaxPrice(100);
   };
 
   return (
